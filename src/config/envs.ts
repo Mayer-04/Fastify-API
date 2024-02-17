@@ -1,24 +1,13 @@
-const schema = {
-  type: "object",
-  required: ["PORT"],
-  properties: {
-    PORT: {
-      type: "string",
-      default: 5000,
-    },
-    POSTGRE_URI: {
-      type: "string",
-    },
-  },
-};
+import "dotenv/config";
+import { cleanEnv, port, str, num } from "envalid";
 
-export const options = {
-  confKey: "config",
-  schema: schema,
-};
+const PROCESS_ENV = process.env;
 
-const { properties } = schema;
-
-export const envs = {
-  PORT: properties.PORT.default,
-};
+export const envs = cleanEnv(PROCESS_ENV, {
+  PORT: port(),
+  HOST: str(),
+  POSTGRES_DB: str(),
+  POSTGRES_USER: str(),
+  POSTGRES_PASSWORD: str(),
+  POSTGRES_PORT: num(),
+});
