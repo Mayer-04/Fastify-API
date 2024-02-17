@@ -1,2 +1,3 @@
 # Fastify-API
-Desarrollando un CRUD con Fastify y TypeScript ®️
+
+Desarrollando un CRUD con TypeScript, Fastify y como base de datos PostgreSQL ®️
