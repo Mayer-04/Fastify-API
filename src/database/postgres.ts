@@ -10,6 +10,7 @@ const config = {
   password: POSTGRES_PASSWORD,
   database: POSTGRES_DB,
   port: POSTGRES_PORT,
+  allolowExitOnIdle: true,
 };
 
 export const pool = new Pool(config);

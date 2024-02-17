@@ -1,6 +1,7 @@
 import Fastify from "fastify";
 import { envs } from "./config/envs";
 import { productRoutes } from "./routes/products";
+import { connectionPostgres } from "./database";
 
 const fastify = Fastify({
   logger: true,
@@ -13,6 +14,7 @@ fastify.register(productRoutes, { prefix: "/products" });
 
 const start = async () => {
   try {
+    await connectionPostgres();
     await fastify.listen({ port: SERVER_PORT, host: HOST });
   } catch (err) {
     fastify.log.error(err);
