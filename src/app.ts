@@ -7,15 +7,15 @@ const fastify = Fastify({
   logger: true,
 });
 
-const { PORT, HOST } = envs;
+const { PORT } = envs;
 const SERVER_PORT = PORT ?? 5001;
 
-fastify.register(productRoutes, { prefix: "/products" });
+fastify.register(productRoutes, { prefix: "/api" });
 
 const start = async () => {
   try {
     await connectionPostgres();
-    await fastify.listen({ port: SERVER_PORT, host: HOST });
+    await fastify.listen({ port: SERVER_PORT });
   } catch (err) {
     fastify.log.error(err);
     process.exit(1);
