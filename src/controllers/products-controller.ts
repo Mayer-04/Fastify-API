@@ -1,19 +1,25 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { productsModel } from "../models/products-model";
+import { ProductsModel } from "../models/products-model";
 import { Product } from "../types/products";
-export class productsController {
-  private productModel: productsModel;
+export class ProductsController {
+  constructor(private productsModel: ProductsModel) {}
 
-  constructor(productsModel: productsModel) {
-    this.productModel = productsModel;
-  }
-
-  getProduct = async (
-    request: FastifyRequest<{ Params: { id: string } }>,
-    reply: FastifyReply
-  ) => {
+  getAllProducts = async (request: FastifyRequest, reply: FastifyReply) => {
     try {
-    } catch (error) {}
+      const products = await this.productsModel.getProduct();
+
+      if (products.length === 0) {
+        return reply.code(404).send({
+          message: "No products found",
+        });
+      }
+
+      return reply.code(200).send(products);
+    } catch (error) {
+      return reply.code(500).send({
+        message: "Internal server error",
+      });
+    }
   };
 
   getProductId = async (
@@ -22,7 +28,18 @@ export class productsController {
   ) => {
     const { id } = request.params;
     try {
-    } catch (error) {}
+      const product = await this.productsModel.getProductId(id);
+      if (!product) {
+        return reply.code(404).send({
+          message: "Product not found",
+        });
+      }
+      return reply.code(200).send(product);
+    } catch (error) {
+      reply.code(500).send({
+        message: "Internal server error",
+      });
+    }
   };
 
   createProduct = async (

@@ -2,31 +2,31 @@ import { pool } from "../database/postgres";
 import { Product } from "../types/products";
 import { QueryResult } from "pg";
 
-export class productsModel {
-  static async getProduct() {
+export class ProductsModel {
+  async getProduct() {
     try {
       const query: QueryResult<Product> = await pool.query(
         "SELECT * FROM products;"
       );
       const { rows } = query;
-      if (rows.length === 0) {
-      }
+      return rows;
     } catch (error) {
       throw new Error("Database connection error", { cause: error });
     }
   }
-  static async getProductId(id: string) {
+  async getProductId(id: string) {
     try {
       const query: QueryResult<Product> = await pool.query(
         "SELECT name, description, price, quantity FROM products WHERE id = $1;",
         [id]
       );
       const { rows } = query;
+      return rows[0];
     } catch (error) {
       throw new Error("Database connection error", { cause: error });
     }
   }
-  static async createProduct({ name, description, price, quantity }: Product) {
+  async createProduct({ name, description, price, quantity }: Product) {
     const getProduct: QueryResult<Product> = await pool.query(
       "SELECT name FROM products WHERE name = $1;",
       [name]
@@ -46,7 +46,7 @@ export class productsModel {
       throw new Error("Database connection error", { cause: error });
     }
   }
-  static async updateProduct(
+  async updateProduct(
     id: string,
     { name, description, price, quantity }: Product
   ) {
@@ -64,7 +64,7 @@ export class productsModel {
       throw new Error("Database connection error", { cause: error });
     }
   }
-  static async deleteProduct(id: string) {
+  async deleteProduct(id: string) {
     try {
       const getProductId = await pool.query(
         "SELECT id FROM products WHERE id = $1;",

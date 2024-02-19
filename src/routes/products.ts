@@ -1,19 +1,20 @@
 import { FastifyInstance } from "fastify";
-import { productsController } from "../controllers/products-controller";
-import { productsModel } from "../models/products-model";
+import { ProductsController } from "../controllers/products-controller";
+import { ProductsModel } from "../models/products-model";
 
-const productController = new productsController(productsModel);
+const productsModel = new ProductsModel();
+const productsController = new ProductsController(productsModel);
 
 // TODO: http://localhost:5000/api/products
 
 export const productRoutes = async (fastify: FastifyInstance) => {
-  fastify.get("/products", productController.getProduct);
+  fastify.get("/products", productsController.getAllProducts);
 
-  fastify.get("/products/:id", productController.getProductId);
+  fastify.get("/products/:id", productsController.getProductId);
 
-  fastify.post("/products", productController.createProduct);
+  fastify.post("/products", productsController.createProduct);
 
-  fastify.put("/products/:id", productController.updateProduct);
+  fastify.put("/products/:id", productsController.updateProduct);
 
-  fastify.delete("/products/:id", productController.deleteProduct);
+  fastify.delete("/products/:id", productsController.deleteProduct);
 };
