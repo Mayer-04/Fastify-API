@@ -1,7 +1,7 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { ProductsModel } from "../models/products-model";
 import { Product } from "../types/products";
-import { productValidation } from "../config/validations";
+import { productValidation } from "../utils/validations";
 export class ProductsController {
   constructor(private productsModel: ProductsModel) {}
 
