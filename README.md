@@ -29,7 +29,7 @@ API REST creada con Fastify, TypeScript y PostgreSQL, diseñada para realizar op
    pnpm install
    ```
 
-3. Clonar el archivo **.env.template** a **.env** para configurar las variables de entorno. Credenciales de la base de datos y la clave secreta para JWT.
+3. Clonar el archivo **.env.template** a **.env** para configurar las variables de entorno. Credenciales de la base de datos.
 4. Configurar el **docker-compose.yml** y ejecutar:
 
    ```bash
