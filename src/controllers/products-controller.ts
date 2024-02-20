@@ -63,7 +63,16 @@ export class ProductsController {
         quantity,
       });
 
-      return reply.code(201).send({ message: "Product created", product });
+      const { rows } = product;
+
+      if (rows.length > 0) {
+        return reply.code(400).send({ message: "Product already exists" });
+      }
+
+      return reply.code(201).send({
+        message: "Product created",
+        product: { name, description, price, quantity },
+      });
     } catch (error) {
       return reply.code(500).send({
         message: "Internal server error",
@@ -77,6 +86,13 @@ export class ProductsController {
   ) => {
     const { id } = request.params;
     const { name, description, price, quantity } = request.body;
+
+    const validations = productValidation(reply, { name, price, quantity });
+
+    if (validations) {
+      return reply.code(400).send(validations);
+    }
+
     try {
       const product = await this.productsModel.updateProduct(id, {
         name,
@@ -85,14 +101,15 @@ export class ProductsController {
         quantity,
       });
 
-      if (!product) {
+      if (product.rows.length === 0) {
         return reply.code(404).send({
-          message: "Product not found",
+          message: "Product not exists",
         });
       }
 
       return reply.code(200).send({
         message: "Product updated",
+        product: { name, description, price, quantity },
       });
     } catch (error) {
       return reply.code(500).send({

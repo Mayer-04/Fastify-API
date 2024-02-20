@@ -34,12 +34,8 @@ export class ProductsModel {
 
     const { rows } = getProduct;
 
-    if (rows.length > 0) {
-      throw new Error("Product already exists");
-    }
-
     try {
-      await pool.query(
+      await pool.query<Product>(
         "INSERT INTO products (name, description, price, quantity) VALUES ($1, $2, $3, $4);",
         [name, description, price, quantity]
       );
@@ -49,6 +45,7 @@ export class ProductsModel {
         description,
         price,
         quantity,
+        rows,
       };
     } catch (error) {
       throw new Error("Database connection error", { cause: error });
@@ -64,7 +61,9 @@ export class ProductsModel {
         [id]
       );
 
-      await pool.query(
+      const { rows } = getProductId;
+
+      await pool.query<Product>(
         "UPDATE products SET name = $1, description = $2, price = $3, quantity = $4 WHERE id = $5;",
         [name, description, price, quantity, id]
       );
@@ -75,6 +74,7 @@ export class ProductsModel {
         description,
         price,
         quantity,
+        rows,
       };
     } catch (error) {
       throw new Error("Database connection error", { cause: error });
@@ -89,9 +89,9 @@ export class ProductsModel {
 
       await pool.query("DELETE FROM products WHERE id = $1;", [id]);
 
-      const { rows } = getProductId;
+      const [productRow] = getProductId.rows;
 
-      return rows[0];
+      return productRow;
     } catch (error) {
       throw new Error("Database connection error", { cause: error });
     }
