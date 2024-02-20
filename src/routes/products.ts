@@ -10,7 +10,7 @@ const productsController = new ProductsController(productsModel);
 export const productRoutes = async (fastify: FastifyInstance) => {
   fastify.get("/products", productsController.getAllProducts);
 
-  fastify.get("/products/:id", productsController.getProductId);
+  fastify.get("/products/:id", productsController.getProduct);
 
   fastify.post("/products", productsController.createProduct);
 
