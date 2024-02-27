@@ -1,7 +1,7 @@
 {
   "name": "fastify-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "CRUD con Fastify y PostgreSQL",
   "main": "app.ts",
   "scripts": {
     "dev": "tsx watch src/app.ts"
@@ -16,8 +16,8 @@
     "pg": "8.11.3"
   },
   "devDependencies": {
-    "@types/node": "20.11.19",
-    "@types/pg": "8.11.0",
+    "@types/node": "20.11.20",
+    "@types/pg": "8.11.2",
     "tsx": "4.7.1",
     "typescript": "5.3.3"
   }
